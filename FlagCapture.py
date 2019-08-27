@@ -71,12 +71,48 @@ class FlagCaptureGraph:
         if self.robot_pos['D2_1'] == self.flag['flag_D2'] or self.robot_pos['D2_2'] == self.flag['flag_D2'] or self.robot_pos['Q5_1'] == self.flag['flag_Q5'] or self.robot_pos['Q5_2'] == self.flag['flag_Q5']:
             return True
 
-    def successors(self, robot_name):
-        current_state = self.robot_pos[robot_name]
-        for next_state in self.neighbors(current_state):
-            new_game = self.copy()
-            new_game.perform_move(current_state, next_state)
-            yield next_state, new_game
+    def printmap(self):
+        for row in self.map:
+            row_str = ''
+            for grid in row:
+                if grid == 'D2_1' or grid == 'D2_2':
+                    add = '*'
+                elif grid == 'Q5_1' or grid == 'Q5_2':
+                    add = 'o'
+                else:
+                    add = 'x'
+                row_str += add
+            print(row_str)
+
+    def successors(self, D2):
+        if D2 == True:
+            D2_1_current_state = self.robot_pos['D2_1']
+            for D2_1_next_state in self.neighbors(D2_1_current_state):
+                move = {}
+                move['D2_1'] = D2_1_next_state
+                new_game_1 = self.copy()
+                new_game_1.perform_move(D2_1_current_state, D2_1_next_state)
+                D2_2_current_state = new_game_1.robot_pos['D2_2']
+
+                for D2_2_next_state in new_game_1.neighbors(D2_2_current_state):
+                    move['D2_2'] = D2_2_next_state
+                    new_game_2 = new_game_1.copy()
+                    new_game_2.perform_move(D2_2_current_state, D2_2_next_state)
+                    yield move, new_game_2
+        else:
+            Q5_1_current_state = self.robot_pos['Q5_1']
+            for Q5_1_next_state in self.neighbors(Q5_1_current_state):
+                move = {}
+                move['Q5_1'] = Q5_1_next_state
+                new_game_1 = self.copy()
+                new_game_1.perform_move(Q5_1_current_state, Q5_1_next_state)
+                Q5_2_current_state = new_game_1.robot_pos['Q5_2']
+
+                for Q5_2_next_state in new_game_1.neighbors(Q5_2_current_state):
+                    move['Q5_2'] = Q5_2_next_state
+                    new_game_2 = new_game_1.copy()
+                    new_game_2.perform_move(Q5_2_current_state, Q5_2_next_state)
+                    yield move, new_game_2
 
     def perform_move(self, current_state, move_state):
         move_robot = self.state[current_state]
