@@ -4,17 +4,19 @@ from collections import defaultdict
 inf = float('inf')
 
 class FlagCaptureGraph:
-    def __init__(self, V, E, state):
+    def __init__(self, V, E, state, flag):
         self.vertics = V
         self.edges = E
         self.state = state
+        self.flag = flag
 
     def neighbors(self, u):
         neighbors_lst = []
         for x, y in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             next_state = (u[0] + x, u[1] + y)
-            if self.state[next_state[0]][next_state[1]] == 'x' and (u, next_state) in self.edges:
-                neighbors_lst.append(next_state)
+            if (u, next_state) in self.edges:
+                if self.state[next_state[0]][next_state[1]] == 'x':
+                    neighbors_lst.append(next_state)
         return neighbors_lst
 
     def dist_between(self, u, v):
@@ -23,7 +25,7 @@ class FlagCaptureGraph:
         else:
             return None
 
-    def A_star(self, start, goal):
+    def Astar(self, start, goal):
         rows = self.vertics[-1][0]
         cols = self.vertics[-1][1]
         node_visited = []
@@ -48,4 +50,10 @@ class FlagCaptureGraph:
                     expand_astar_cost = expand_cost + heuristic
                     new_state = (expand_astar_cost, expand_cost, path + [node], node)
                     q.put(new_state)
-        return path, len(path)
+        return path
+
+    def perform_move():
+        pass
+
+    def evaluate(self):
+        pass
