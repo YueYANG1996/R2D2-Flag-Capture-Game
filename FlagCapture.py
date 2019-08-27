@@ -1,5 +1,6 @@
 import math
 import queue
+import copy
 from collections import defaultdict
 inf = float('inf')
 
@@ -7,6 +8,7 @@ class FlagCaptureGraph:
     def __init__(self, V, E, initial_state, flag):
         self.vertics = V
         self.edges = E
+        self.map = initial_state
         self.state = {}
         self.robot_pos = {}
         for vertic in self.vertics:
@@ -44,8 +46,6 @@ class FlagCaptureGraph:
             astar_cost, current_cost, path, current_pos = current_node[0], current_node[1], current_node[2], current_node[3]
             
             if self.state[goal] != 'x':
-                print(current_pos)
-                print(self.dist_between(current_pos, goal))
                 if self.dist_between(current_pos, goal) == 1:
                     return (path, float('inf'))
 
@@ -62,11 +62,29 @@ class FlagCaptureGraph:
                     q.put(new_state)
         return (path, len(path))
 
+    def copy(self):
+        new_map = copy.deepcopy(self.map)
+        return FlagCaptureGraph(self.vertics, self.edges, new_map, self.flag)
+
+
+    def game_over(self, D2):
+        if self.robot_pos['D2_1'] == self.flag['flag_D2'] or self.robot_pos['D2_2'] == self.flag['flag_D2'] or self.robot_pos['Q5_1'] == self.flag['flag_Q5'] or self.robot_pos['Q5_2'] == self.flag['flag_Q5']:
+            return True
+
+    def successors(self, robot_name):
+        current_state = self.robot_pos[robot_name]
+        for next_state in self.neighbors(current_state):
+            new_game = self.copy()
+            new_game.perform_move(current_state, next_state)
+            yield next_state, new_game
+
     def perform_move(self, current_state, move_state):
         move_robot = self.state[current_state]
         self.state[move_state] = move_robot
         self.state[current_state] = 'x'
         self.robot_pos[move_robot] = move_state
+        self.map[current_state[0]][current_state[1]] = 'x'
+        self.map[move_state[0]][move_state[1]] = move_robot
         pass
 
     def evaluate(self, D2):
@@ -78,3 +96,37 @@ class FlagCaptureGraph:
             return min(cost_Q5_1, cost_Q5_2) - min(cost_D2_1, cost_D2_2)
         else:
             return - min(cost_Q5_1, cost_Q5_2) + min(cost_D2_1, cost_D2_2)
+
+    '''def alpha_beta_max(self, D2, original_D2, limit, alpha, beta):
+        if limit <= 0 or self.game_over(D2):
+            return None, self.evaluate(original_D2), 1
+        best_move, best_value, total_leaves = None, float("-inf"), 0
+        for move, new_game in self.successors(vertical):
+            new_move, new_value, new_leaves = new_game.alpha_beta_min(
+                not vertical, original_vertical, limit - 1, alpha, beta)
+            total_leaves += new_leaves
+            if new_value > best_value:
+                best_move, best_value = move, new_value
+            if best_value >= beta:
+                break
+            alpha = max(alpha, best_value)
+        return best_move, best_value, total_leaves
+
+    def alpha_beta_min(self, vertical, original_vertical, limit, alpha, beta):
+        if limit <= 0 or self.game_over(vertical):
+            return None, self.evaluate(original_vertical), 1
+        best_move, best_value, total_leaves = None, float("inf"), 0
+        for move, new_game in self.successors(vertical):
+            new_move, new_value, new_leaves = new_game.alpha_beta_max(
+                not vertical, original_vertical, limit - 1, alpha, beta)
+            total_leaves += new_leaves
+            if new_value < best_value:
+                best_move, best_value = move, new_value
+            if best_value <= alpha:
+                break
+            beta = min(beta, best_value)
+        return best_move, best_value, total_leaves
+
+    def get_best_move(self, vertical, limit):
+        return self.alpha_beta_max(vertical, vertical, limit, float("-inf"),
+            float("inf"))'''
