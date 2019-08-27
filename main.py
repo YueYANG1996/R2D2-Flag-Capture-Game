@@ -4,4 +4,8 @@ E = [((0, 0), (0, 1)), ((0, 0), (1, 0)), ((0, 1), (0, 2)), ((0, 1), (1, 1)), ((0
 state = [['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
 flag = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
 graph = FlagCaptureGraph(V, E, state, flag)
+path = graph.Astar((0, 0), graph.flag['flag_D2'])
+graph.perform_move((0, 0), (0, 1))
+graph.Astar(graph.robot_pos['Q5_1'], graph.flag['flag_Q5'])
+graph.evaluate(True)
 
