@@ -9,16 +9,19 @@ graph = FlagCaptureGraph(V, E, state, flag)
 D2 = True
 limit = 4
 Round = 1
+record_game = []
 while graph.game_over() != True:
 	print('Round: ' + str(Round))
 	print('D2 Turn')
 	D2_movement = graph.get_best_move(D2, limit)[0]
 	graph.perform_move(graph.robot_pos['D2_1'], D2_movement['D2_1'])
+	record_game.append(('D2_1', D2_movement['D2_1']))
 	graph.printmap()
 	print('             ')
 	if graph.game_over():
 		break
 	graph.perform_move(graph.robot_pos['D2_2'], D2_movement['D2_2'])
+	record_game.append(('D2_2', D2_movement['D2_2']))
 	graph.printmap()
 	print('             ')
 	if graph.game_over():
@@ -26,11 +29,13 @@ while graph.game_over() != True:
 	print('Q5 Turn')
 	Q5_movement = graph.get_best_move(False, limit)[0]
 	graph.perform_move(graph.robot_pos['Q5_1'], Q5_movement['Q5_1'])
+	record_game.append(('Q5_1', Q5_movement['Q5_1']))
 	graph.printmap()
 	print('             ')
 	if graph.game_over():
 		break
 	graph.perform_move(graph.robot_pos['Q5_2'], Q5_movement['Q5_2'])
+	record_game.append(('Q5_2', Q5_movement['Q5_2']))
 	graph.printmap()
 	print('             ')
 	if graph.game_over():
