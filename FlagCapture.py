@@ -47,7 +47,7 @@ class FlagCaptureGraph:
             
             if self.state[goal] != 'x':
                 if self.dist_between(current_pos, goal) == 1:
-                    return (path, len(path) + 3)
+                    return (path, len(path) + 1)
 
             if current_pos == goal:
                 return (path, len(path))
@@ -115,13 +115,24 @@ class FlagCaptureGraph:
                     yield move, new_game_2
 
     def perform_move(self, current_state, move_state):
+        vector = (move_state[0] - current_state[0], move_state[1] - current_state[1])
+        if vector == (1, 0):
+            movement = 'south'
+        elif vector == (0, 1):
+            movement = 'east'
+        elif vector == (0, -1):
+            movement = 'west'
+        elif vector == (-1, 0):
+            movement = 'north'
+        else:
+            movement = 'stay'
         move_robot = self.state[current_state]
         self.state[move_state] = move_robot
         self.state[current_state] = 'x'
         self.robot_pos[move_robot] = move_state
         self.map[current_state[0]][current_state[1]] = 'x'
         self.map[move_state[0]][move_state[1]] = move_robot
-        pass
+        return movement
 
     def evaluate(self, D2):
         cost_D2_1 = self.Astar(self.robot_pos['D2_1'], self.flag['flag_D2'])[1]
