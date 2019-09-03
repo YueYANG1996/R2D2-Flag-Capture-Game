@@ -7,7 +7,7 @@ graph = FlagCaptureGraph(V, E, state, flag)
 
 #Test Game
 D2 = True
-limit = 3
+limit = 4
 Round = 1
 record_game = []
 
@@ -84,7 +84,7 @@ while graph.game_over() != True:
 
 from client import DroidClient
 from r2d2_action import action
-robot_tag = {'D2_1': 'D2-D74E', 'D2_2': 'D2-3493', 'Q5_1': 'Q5-D26A', 'Q5_2': 'Q5-B348'}
+robot_tag = {'D2_1': 'D2-FE32', 'D2_2': 'D2-3493', 'Q5_1': 'Q5-D26A', 'Q5_2': 'Q5-B348'}
 droid1 = DroidClient()
 droid2 = DroidClient()
 droid3 = DroidClient()
@@ -92,10 +92,11 @@ droid4 = DroidClient()
 Droids = {'D2_1': droid1, 'D2_2': droid2, 'Q5_1': droid3, 'Q5_2': droid4}
 for key in robot_tag:
 	Droids[key].connect_to_droid(robot_tag[key])
-
+speed = 0.4
+time = 1.5
+action(record_game, Droids, speed, time)
 for key in Droids:
 	Droids[key].disconnect()
-action(record_game, Droids, speed, time)
 
 
 
