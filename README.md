@@ -80,3 +80,6 @@ You could expect the following outputs：
 >>> graph.Astar((0, 0), (2, 2))
 ([(0, 0), (0, 1), (0, 2), (1, 2), (2, 2)], 5)
 ```
+
+The evaluate function estimate the utilities (scores) of current state which reflect the chance of wining the game. There are various methods to evaluate the utilities in this game, and different approaches will have influence on the performance of the robot and game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of seach team as the utility, which is:
+$U(D2) = min(Astar_cost(D2_1, flag_D2), Astar_cost(D2_2, flag_D2)) - min(Astar_cost(D2_1, flag_D2), Astar_cost(D2_2, flag_D2))$
