@@ -15,6 +15,44 @@ while graph.game_over() != True:
 	print('Round: ' + str(Round))
 	print('D2 Turn')
 	D2_movement = graph.get_best_move(D2, limit)[0]
+	move_direction = graph.perform_move(graph.robot_pos['D2_1'], D2_movement['D2_1'])
+	record_game.append(('D2_1', move_direction))
+	graph.printmap()
+	print('             ')
+	if graph.game_over():
+		print('D2 WIN')
+		break
+	move_direction = graph.perform_move(graph.robot_pos['D2_2'], D2_movement['D2_2'])
+	record_game.append(('D2_2', move_direction))
+	graph.printmap()
+	print('             ')
+	if graph.game_over():
+		print('D2 WIN')
+		break
+	print('Q5 Turn')
+	Q5_movement = graph.get_best_move(False, limit)[0]
+	move_direction = graph.perform_move(graph.robot_pos['Q5_1'], Q5_movement['Q5_1'])
+	record_game.append(('Q5_1', move_direction))
+	graph.printmap()
+	print('             ')
+	if graph.game_over():
+		print('Q5 WIN')
+		break
+	move_direction = graph.perform_move(graph.robot_pos['Q5_2'], Q5_movement['Q5_2'])
+	record_game.append(('Q5_2', move_direction))
+	graph.printmap()
+	print('             ')
+	if graph.game_over():
+		print('Q5 WIN')
+		break
+	Round += 1
+	if Round > 20:
+		break
+
+'''while graph.game_over() != True:
+	print('Round: ' + str(Round))
+	print('D2 Turn')
+	D2_movement = graph.get_best_move(D2, limit)[0]
 	move_robot = D2_movement[0]
 	print(move_robot)
 	move_direction = graph.perform_move(graph.robot_pos[move_robot], D2_movement[1])
@@ -37,7 +75,7 @@ while graph.game_over() != True:
 		break
 	Round += 1
 	if Round > 40:
-		break
+		break'''
 '''
 while graph.game_over() != True:
 	print('Round: ' + str(Round))
@@ -86,10 +124,8 @@ time = 1.5
 action(record_game, Droids, speed, time)
 for key in Droids:
 	Droids[key].disconnect()
-<<<<<<< HEAD
-=======
 action(record_game, Droids, speed, time)'''
->>>>>>> 8a70f858d323daf2ffe7f22b512e72d0c594ca06
+
 
 
 
