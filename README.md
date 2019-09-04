@@ -1,9 +1,9 @@
-#Robot Excercise 3: Flag Capture Game with Minimax Algorithm
+# Robot Excercise 3: Flag Capture Game with Minimax Algorithm
 
-##Instructions
+## Instructions
 In this assignment, you will combine your knowledege of informed search algorithm with the adversarial search game tree to teach the R2D2s how to play optimally in a flag capture game.
 
-##Step 1: Create the Game Board
+## Step 1: Create the Game Board
 Similar to the A* game in last excercise, the game board also takes in the vertices and edges to define a graph. In addition to these two parameters, we also need to define the position of the robots and the flags.
 
 ```python
@@ -63,7 +63,7 @@ x x x o
 1.0
 ```
 
-##Step 2: Define the A* algorithm and evaluate function
+## Step 2: Define the A* algorithm and evaluate function
 Implement the A star to calculate the shortest path between two vertics. This step is almost the same as the solution of excercise 2, but it should be noticed that, in the cases of the opponents occupy the flag, the path cannot lead to the goal(robots will be considered as obstacles), thus the total length of the path should be modified.
 
 ```python
