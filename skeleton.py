@@ -9,7 +9,6 @@ class FlagCaptureGraph:
     def dist_between(self, u, v):
         pass
 
-
     def Astar(self, start, goal):
         pass
 
