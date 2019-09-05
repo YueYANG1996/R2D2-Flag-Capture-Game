@@ -13,8 +13,7 @@ class FlagCaptureGraph:
         pass
 
     def copy(self):
-        new_map = copy.deepcopy(self.map)
-        return FlagCaptureGraph(self.vertics, self.edges, new_map, self.flag)
+        pass
 
     def game_over(self):
         pass

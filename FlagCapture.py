@@ -173,8 +173,10 @@ class FlagCaptureGraph:
         cost_Q5_1 = self.Astar(self.robot_pos['Q5_1'], self.flag['flag_Q5'])[1]
         cost_Q5_2 = self.Astar(self.robot_pos['Q5_2'], self.flag['flag_Q5'])[1]
         if D2 == True:
+            '''return (cost_Q5_1 + cost_Q5_2) - (cost_D2_1 + cost_D2_2)'''
             return min(cost_Q5_1, cost_Q5_2) - min(cost_D2_1, cost_D2_2)
         else:
+            '''return -(cost_Q5_1 + cost_Q5_2) + (cost_D2_1 + cost_D2_2)'''
             return - min(cost_Q5_1, cost_Q5_2) + min(cost_D2_1, cost_D2_2)
 
     def alpha_beta_max(self, D2, original_D2, limit, alpha, beta):
