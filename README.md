@@ -78,6 +78,13 @@ def perform_move(self, current_state, move_state):
 def game_over(self):
 	pass
 ```
+```perform_move(self, current_state, move_state)``` excute the movement of the robot and update the game object accordingly. The game
+
+```copy(self)```function just return a new game object by deep copy of current game.
+
+```python
+
+```
 
 ## Step 3: Define the A* algorithm and the evaluate function
 Implement the A star to calculate the shortest path between two vertics. This step is almost the same as the solution of excercise 2, but it should be noticed that, in the cases of the opponents occupy the flag, the path cannot lead to the goal(robots will be considered as obstacles), thus the total length of the path should be modified.
@@ -97,7 +104,7 @@ Using the same parameters of graph as above, you could expect the following outp
 ([(0, 0), (0, 1), (0, 2), (1, 2), (2, 2)], 5)
 ```
 
-The evaluate function estimate the utilities (scores) of current state which reflect the chance of wining the game. There are various methods to evaluate the utilities in this game, and different approaches will have influence on the performance of the robot and game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of seach team as the utility.
+The ```evaluate(self, D2)``` estimate the utilities (scores) of current state which reflect the chance of wining the game. There are various methods to evaluate the utilities in this game, and different approaches will have influence on the performance of the robot and game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of seach team as the utility.
 
 ```python
 def evaluate(self, D2):
@@ -118,8 +125,46 @@ def get_best_move(self, D2, limit):
 	pass
 ```
 
-After you finished the
-## Step 5: Let's our Robots rolling in a real game
+After you finished the minimax algorithm, you could now play the game in a virtual environment.
+
+```python
+>>> from game_simulation import simulate_game
+>>> record_game = simulate_game(graph, D2 = True, limit = 4)
+Round: 1
+D2 Turn
+x * x x 
+* x x x 
+x x x o 
+x x x o 
+             
+x * x x 
+x x x x 
+* x x o 
+x x x o 
+             
+Q5 Turn
+x * x x 
+x x x o 
+* x x x 
+x x x o 
+             
+x * x x 
+x x x o 
+* x x x 
+x x o x 
+
+...
+
+Q5 Turn
+x o x x 
+x x x * 
+x * x x 
+o x x x 
+             
+Q5 WIN
+```
+
+## Step 5: Let our Robots rolling in a real game
 You will apply your algorithm in the real robots to visulize your program.
 
 ```python
