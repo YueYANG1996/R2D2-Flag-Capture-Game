@@ -1,10 +1,10 @@
 # Robot Excercise 3: Flag Capture Game with Minimax Algorithm
 
 ## Instructions
-In this assignment, you will combine your knowledge of informed search algorithms with the adversarial search game tree to teach the R2D2s how to play optimally in a flag capture game.
+In this assignment, you will combine your knowledege of informed search algorithm with the adversarial search game tree to teach the R2D2s how to play optimally in a flag capture game.
 
 ## Step 1: Create the Game Board
-Similar to the A* game in the last excercise, the game board also takes in the vertices and edges to define a graph. In addition to these two parameters, we also need to define the position of the robots and the flags.
+Similar to the A* game in last excercise, the game board also takes in the vertices and edges to define a graph. In addition to these two parameters, we also need to define the position of the robots and the flags.
 
 ```python
 def __init__(self, V, E, initial_state, flag):
@@ -32,7 +32,7 @@ def dist_between(self, u, v):
 	'''
 	pass
 ```
-You should expect the following outputs:
+You could expect the following outputs:
 
 ```python
 >>> V = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
@@ -65,15 +65,8 @@ x x x o
 ## Step 2: Define the Game Rules
 In this step, we will define the basic rules of the game, such as how to judge whether the game is over, how to update the game state when perform a move on the robot, etc.
 
-<<<<<<< HEAD
 ```python
 def copy(self):
-	'''
-		
-	'''
-	pass
-	
-def game_over(self):
 	pass
 	
 def successors(self, D2):
@@ -81,14 +74,13 @@ def successors(self, D2):
 
 def perform_move(self, current_state, move_state):
 	pass
+	
+def game_over(self):
+	pass
 ```
 
 ## Step 3: Define the A* algorithm and the evaluate function
 Implement the A star to calculate the shortest path between two vertics. This step is almost the same as the solution of excercise 2, but it should be noticed that, in the cases of the opponents occupy the flag, the path cannot lead to the goal(robots will be considered as obstacles), thus the total length of the path should be modified.
-=======
-## Step 2: Define the A* algorithm and evaluate function
-Implement the A star to calculate the shortest path between two vertices. This step is almost the same as the solution of excercise 2, but it should be noticed that, in the cases where the opponents are occupying the flag, the path cannot lead to the goal(robots will be considered as obstacles), and thus the total length of the path should be modified.
->>>>>>> 4cbe65e1fb45b2c762858dc8fe7370ea37a2d347
 
 ```python
 def Astar(self, start, goal):
@@ -98,14 +90,13 @@ def Astar(self, start, goal):
 	'''
 	pass
 ```
-You should expect the following outputs：
+Using the same parameters of graph as above, you could expect the following outputs：
 
 ```python
 >>> graph.Astar((0, 0), (2, 2))
 ([(0, 0), (0, 1), (0, 2), (1, 2), (2, 2)], 5)
 ```
 
-<<<<<<< HEAD
 The evaluate function estimate the utilities (scores) of current state which reflect the chance of wining the game. There are various methods to evaluate the utilities in this game, and different approaches will have influence on the performance of the robot and game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of seach team as the utility.
 
 ```python
@@ -113,11 +104,44 @@ def evaluate(self, D2):
 	pass
 ```
 
+## Step 4: Implement Minimax algorithm with alpha-beta pruning
+In this part, you will utilize your knowledge of alpha-beta minimax algorithm to help the R2D2s find out the optimal movements.
+
+```python
+def alpha_beta_max(self, D2, original_D2, limit, alpha, beta):
+	pass
+
+def alpha_beta_min(self, D2, original_D2, limit, alpha, beta):
+	pass
+
+def get_best_move(self, D2, limit):
+	pass
+```
+
+After you finished the
+## Step 5: Let's our Robots rolling in a real game
+You will apply your algorithm in the real robots to visulize your program.
+
+```python
+>>> from client import DroidClient
+>>> from r2d2_action import action
+###replace with your own tags###
+>>> robot_tag = {'D2_1': 'D2-FE32', 'D2_2': 'D2-3493', 'Q5_1': 'Q5-D26A', 'Q5_2': 'Q5-B348'}
+>>> droid1 = DroidClient()
+>>> droid2 = DroidClient()
+>>> droid3 = DroidClient()
+>>> droid4 = DroidClient()
+>>> Droids = {'D2_1': droid1, 'D2_2': droid2, 'Q5_1': droid3, 'Q5_2': droid4}
+>>> for key in robot_tag:
+...     Droids[key].connect_to_droid(robot_tag[key])
+```
+
+```python
+###adjust the speed and time according to the grid size###
+speed = 0.4
+time = 1.5
+action(record_game, Droids, speed, time)
+```
 
 
 
-
-=======
-The evaluate function estimates the utilities (scores) of the current state which reflect the chance of winning the game. There are various methods to evaluate the utilities in this game, and different approaches will influence the performance of the robot and game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of the search team as the utility, which is:
-$U(D2) = min(Astar_cost(D2_1, flag_D2), Astar_cost(D2_2, flag_D2)) - min(Astar_cost(D2_1, flag_D2), Astar_cost(D2_2, flag_D2))$
->>>>>>> 4cbe65e1fb45b2c762858dc8fe7370ea37a2d347
