@@ -256,7 +256,7 @@ o x x x
 Q5 WIN
 ```
 
-## Step 5: Let our Robots rolling in a real game
+## Step 5: Let your Robots rolling in a real game
 You will apply your algorithm in the real robots to visulize your program. The ```record_game``` store the movement of each robot and the data looks like:
 
 ```python
