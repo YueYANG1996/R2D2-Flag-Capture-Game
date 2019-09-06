@@ -65,25 +65,117 @@ x x x o
 ## Step 2: Define the Game Rules
 In this step, we will define the basic rules of the game, such as how to judge whether the game is over, how to update the game state when perform a move on the robot, etc.
 
-```python
-def copy(self):
-	pass
-	
+```python	
 def successors(self, D2):
 	pass
 
 def perform_move(self, current_state, move_state):
 	pass
+
+def copy(self):
+	pass
 	
 def game_over(self):
 	pass
 ```
-```perform_move(self, current_state, move_state)``` excute the movement of the robot and update the game object accordingly. The game
+```perform_move(self, current_state, move_state)``` excute the movement of the robot and update the game object accordingly. This function should also return the direction of the movement (north, south, west, east).
 
+```python
+>>> graph.printmap()
+* x x x 
+* x x x 
+x x x o 
+x x x o 
+>>> graph.perform_move((0, 0), (0, 1))
+'east'
+>>> graph.printmap()
+x * x x 
+* x x x 
+x x x o 
+x x x o
+>>> graph.map
+[['x', 'D2_1', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
+>>> graph.robot_pos
+{'D2_1': (0, 1), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)} 
+>>> graph.state
+{(0, 0): 'x', (0, 1): 'D2_1', (0, 2): 'x', (0, 3): 'x', (1, 0): 'D2_2', (1, 1): 'x', (1, 2): 'x', (1, 3): 'x', (2, 0): 'x', (2, 1): 'x', (2, 2): 'x', (2, 3): 'Q5_1', (3, 0): 'x', (3, 1): 'x', (3, 2): 'x', (3, 3): 'Q5_2'}
+```
+
+```successors(self, D2)``` generate the successors of a game state, and D2 decides whether it is D2's turn. In each turn of a team, the robot 1 will move first and then the robot 2. This function will yield the movements of the two robots (a dictionary with keys of the robots and their next positions).
+
+```python
+>>> for move, game in graph.successors(D2 = True):
+...     print(move)
+...     game.printmap()
+... 
+{'D2_1': (0, 1), 'D2_2': (0, 0)}
+* * x x 
+x x x x 
+x x x o 
+x x x o 
+{'D2_1': (0, 1), 'D2_2': (1, 1)}
+x * x x 
+x * x x 
+x x x o 
+x x x o 
+{'D2_1': (0, 1), 'D2_2': (2, 0)}
+x * x x 
+x x x x 
+* x x o 
+x x x o 
+``` 
+```python
+>>> for move, game in graph.successors(D2 = False):
+...     print(move)
+...     game.printmap()
+... 
+{'Q5_1': (1, 3), 'Q5_2': (2, 3)}
+* x x x 
+* x x o 
+x x x o 
+x x x x 
+{'Q5_1': (1, 3), 'Q5_2': (3, 2)}
+* x x x 
+* x x o 
+x x x x 
+x x o x 
+{'Q5_1': (2, 2), 'Q5_2': (2, 3)}
+* x x x 
+* x x x 
+x x o o 
+x x x x 
+{'Q5_1': (2, 2), 'Q5_2': (3, 2)}
+* x x x 
+* x x x 
+x x o x 
+x x o x
+``` 
 ```copy(self)```function just return a new game object by deep copy of current game.
 
 ```python
+>>> new_graph = graph.copy()
+>>> print(new_graph.state == graph.state)
+True
+>>> new_graph.perform_move((0, 0), (0, 1))
+'east'
+>>> print(new_graph.state == graph.state)
+False
+```
 
+```game_over(self)``` reflects a game is over or not, and the criteria is whether the robot gets to the position of their flags.
+
+```python
+>>> V = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
+>>> E = [((0, 0), (0, 1)), ((0, 0), (1, 0)), ((0, 1), (0, 2)), ((0, 1), (1, 1)), ((0, 1), (0, 0)), ((0, 2), (0, 3)), ((0, 2), (1, 2)), ((0, 2), (0, 1)), ((0, 3), (1, 3)), ((0, 3), (0, 2)), ((1, 0), (0, 0)), ((1, 0), (1, 1)), ((1, 0), (2, 0)), ((1, 1), (0, 1)), ((1, 1), (1, 2)), ((1, 1), (2, 1)), ((1, 1), (1, 0)), ((1, 2), (0, 2)), ((1, 2), (1, 3)), ((1, 2), (2, 2)), ((1, 2), (1, 1)), ((1, 3), (0, 3)), ((1, 3), (2, 3)), ((1, 3), (1, 2)), ((2, 0), (1, 0)), ((2, 0), (2, 1)), ((2, 0), (3, 0)), ((2, 1), (1, 1)), ((2, 1), (2, 2)), ((2, 1), (3, 1)), ((2, 1), (2, 0)), ((2, 2), (1, 2)), ((2, 2), (2, 3)), ((2, 2), (3, 2)), ((2, 2), (2, 1)), ((2, 3), (1, 3)), ((2, 3), (3, 3)), ((2, 3), (2, 2)), ((3, 0), (2, 0)), ((3, 0), (3, 1)), ((3, 1), (2, 1)), ((3, 1), (3, 2)), ((3, 1), (3, 0)), ((3, 2), (2, 2)), ((3, 2), (3, 3)), ((3, 2), (3, 1)), ((3, 3), (2, 3)), ((3, 3), (3, 2))]
+>>> state = [['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
+>>> flag = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
+>>> graph = FlagCaptureGraph(V, E, state, flag)
+>>> graph.gameover()
+False
+>>> state = [['D2_1', 'x', 'x', 'x'], ['x', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'D2_2', 'Q5_2']]
+>>> graph = FlagCaptureGraph(V, E, state, flag)
+>>> graph.game_over()
+True
 ```
 
 ## Step 3: Define the A* algorithm and the evaluate function
@@ -165,7 +257,14 @@ Q5 WIN
 ```
 
 ## Step 5: Let our Robots rolling in a real game
-You will apply your algorithm in the real robots to visulize your program.
+You will apply your algorithm in the real robots to visulize your program. The ```record_game``` store the movement of each robot and the data looks like:
+
+```python
+>>> record_game
+[('D2_1', 'east'), ('D2_2', 'south'), ('Q5_1', 'north'), ('Q5_2', 'west'), ('D2_1', 'east'), ('D2_2', 'south'), ('Q5_1', 'west'), ('Q5_2', 'west'), ('D2_1', 'east'), ('D2_2', 'north'), ('Q5_1', 'north'), ('Q5_2', 'west'), ('D2_1', 'south'), ('D2_2', 'east'), ('Q5_1', 'west')]
+```
+
+You could implement a API to send commands to the robots to perform the movements. First, you need to connect to all of your robots using the following code.
 
 ```python
 >>> from client import DroidClient
@@ -180,6 +279,10 @@ You will apply your algorithm in the real robots to visulize your program.
 >>> for key in robot_tag:
 ...     Droids[key].connect_to_droid(robot_tag[key])
 ```
+
+Then, you will write a function to convert the ```record_game``` to the rolling commands. ```r2d2_action(record_game, Droids, speed, time)``` takes in the movement of a game, all the droids, as well as the speed and time to control the distance of one movement.
+
+When you finish all the tasks above, you could now let your robots play a real world game!
 
 ```python
 ###adjust the speed and time according to the grid size###

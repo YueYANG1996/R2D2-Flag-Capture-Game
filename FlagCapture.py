@@ -70,6 +70,8 @@ class FlagCaptureGraph:
     def game_over(self):
         if self.robot_pos['D2_1'] == self.flag['flag_D2'] or self.robot_pos['D2_2'] == self.flag['flag_D2'] or self.robot_pos['Q5_1'] == self.flag['flag_Q5'] or self.robot_pos['Q5_2'] == self.flag['flag_Q5']:
             return True
+        else:
+            return False
 
     def printmap(self):
         for row in self.map:
