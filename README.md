@@ -86,18 +86,31 @@ In this step, we will define the basic rules of the game, such as how to update 
 ```python	
 def perform_move(self, current_state, move_state):
 	'''
-		Execute the movement of the robot and update the game accordingly, updating the state, map, and robot_pos parameters. 
-		This function should also return the direction of the movement ("north", "south", "west", "east")
+		Execute the movement of the robot and update the game accordingly, updating the state,
+		map, and robot_pos parameters. This function should also return the direction of the 
+		movement ("north", "south", "west", "east")
 	'''
 	pass
 	
 def copy(self):
+	'''
+		Return a new FlagCaptureGraph object that is identical to the current
+	'''
 	pass
 
 def successors(self, D2):
+	'''
+		Generate the successors of a game state. The parameter D2 indicates whether it is 
+		the D2 team's turn. This function should yield a tuple where the first element is
+		the movements of the two robots (a dictionary with keys of the robots and their
+		next positions), as well as a copy of the new game map after these moves are performed.
+	'''
 	pass
 	
 def game_over(self):
+	'''
+		Return a boolean indicating if the game is over.
+	'''
 	pass
 ```
 
