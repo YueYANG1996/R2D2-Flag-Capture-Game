@@ -97,7 +97,7 @@ class FlagCaptureGraph:
 		D2 - boolean representing if it is the D2 team's turn
 		limit - upper bound on the number of turns
 		
-		Return the best move, it's utility value, and the total number of leaves encountered as
+		Return the best move, its utility value, and the total number of leaves encountered as
 		(best_move, best_value, total_leaves)
 	'''
         return self.alpha_beta_max(D2, D2, limit, float("-inf"),
