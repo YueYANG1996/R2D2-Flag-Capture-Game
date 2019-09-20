@@ -227,7 +227,7 @@ True
 ```python
 def Astar(self, start, goal):
 	'''
-		return the path and length of the path
+		return an optimal path and length of the path
 		in the form of (path, len(path))
 	'''
 	pass
@@ -266,7 +266,7 @@ def get_best_move(self, D2, limit):
 		D2 - boolean representing if it is the D2 team's turn
 		limit - upper bound on the number of turns
 		
-		Return the best move, it's utility value, and the total number of leaves encountered as
+		Return the best move, its utility value, and the total number of leaves encountered as
 		(best_move, best_value, total_leaves)
 	'''
 	pass
