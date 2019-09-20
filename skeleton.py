@@ -6,7 +6,7 @@ class FlagCaptureGraph:
     ##                  Part 1                  ##
     ##############################################
     
-    def __init__(self, V, E, initial_state, flag):
+    def __init__(self, V, E, game_map, flag):
         '''
 		self.vertices --  store the vertices of the graph
 		self.edges    --  store the edges of the graph
