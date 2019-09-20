@@ -11,10 +11,10 @@ def __init__(self, V, E, initial_state, flag):
 	'''
 		self.vertices --  store the vertices of the graph
 		self.edges   --  store the edges of the graph
-		self.map     --  store the state of the gameboard
+		self.state     --  store the state of the gameboard
 		self.flag    -- store the positions of the flags
 		
-		self.state   --  dictionary to represent the state of each grid, keys = vertices, value = vertex value in map
+		self.map   --  dictionary to represent the state of each grid, keys = vertices, value = vertex value in state
 		self.robot_pos -- store the positions of the robots in a dictionary, keys = robot name, value = vertex
 	'''
 	pass
@@ -42,16 +42,16 @@ Given the inputs as shown, you could expect the following outputs:
 >>> flag = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
 >>> graph = FlagCaptureGraph(V, E, state, flag)
 
->>> graph.map
+>>> graph.state
 [['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
 
->>> graph.printmap()
+>>> graph.printstate()
 * x x x 
 * x x x 
 x x x o 
 x x x o 
 
->>> graph.state
+>>> graph.map
 {(0, 0): 'D2_1', (0, 1): 'x', (0, 2): 'x', (0, 3): 'x', (1, 0): 'D2_2', (1, 1): 'x', (1, 2): 'x', (1, 3): 'x', (2, 0): 'x', (2, 1): 'x', (2, 2): 'x', (2, 3): 'Q5_1', (3, 0): 'x', (3, 1): 'x', (3, 2): 'x', (3, 3): 'Q5_2'}
 
 >>> graph.robot_pos
@@ -68,6 +68,10 @@ In this step, we will define the basic rules of the game, such as how to judge w
 
 ```python	
 def perform_move(self, current_state, move_state):
+	'''
+		Execute the movement of the robot and update the game accordingly, updating the state, map, and robot_pos parameters. 
+		This function should also return the direction of the movement ("north", "south", "west", "east")
+	'''
 	pass
 
 def successors(self, D2):
@@ -79,7 +83,7 @@ def copy(self):
 def game_over(self):
 	pass
 ```
-```perform_move(self, current_state, move_state)``` execute the movement of the robot and update the game object accordingly. This function should also return the direction of the movement (north, south, west, east).
+```perform_move(self, current_state, move_state)``` execute the movement of the robot and update the game accordingly, updating the state, map, and robot_pos parameters. This function should also return the direction of the movement ("north", "south", "west", "east").
 
 ```python
 >>> graph.printmap()
