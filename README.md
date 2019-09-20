@@ -1,7 +1,7 @@
-# Robot Excercise 3: Flag Capture Game with Minimax Algorithm
+# Robot Excercise 3: Flag Capture Game using a Minimax Algorithm
 
 ## Instructions
-In this assignment, you will combine your knowledege of informed search algorithm with the adversarial search game tree to teach the R2D2s how to play optimally in a flag capture game.
+In this assignment, you will combine your knowledge of informed search algorithms with the adversarial search game tree to teach the R2D2s how to play optimally in a flag capture game.
 
 ## Step 1: Create the Game Board
 Similar to the A* game in last excercise, the game board also takes in the vertices and edges to define a graph. In addition to these two parameters, we also need to define the position of the robots and the flags.
@@ -9,30 +9,31 @@ Similar to the A* game in last excercise, the game board also takes in the verti
 ```python
 def __init__(self, V, E, initial_state, flag):
 	'''
-		self.vertics --  store the vertics of the graph
+		self.vertices --  store the vertices of the graph
 		self.edges   --  store the edges of the graph
 		self.map     --  store the state of the gameboard
-		self.state   --  dictionary to represent the state of each grid
-		self.robot_pos -- store the positions of the robots
 		self.flag    -- store the positions of the flags
+		
+		self.state   --  dictionary to represent the state of each grid, keys = vertices, value = vertex value in map
+		self.robot_pos -- store the positions of the robots in a dictionary, keys = robot name, value = vertex
 	'''
 	pass
 	
 def neighbors(self, u):
 	'''
-		return the neighbors of a grid, 
-		if there is a robot occupies the neighboring grid, 
-		it will not be take as a neighbor.
+		Return the neighbors of a vertex.
+		If there is a robot occupying the neighboring vertex, 
+		do not return that vertex as a neighbor.
 	'''
 	pass
 
 def dist_between(self, u, v):
 	'''
-		return the distance between two vertics
+		Return the distance between two vertices.
 	'''
 	pass
 ```
-You could expect the following outputs:
+Given the inputs as shown, you could expect the following outputs:
 
 ```python
 >>> V = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
@@ -63,13 +64,13 @@ x x x o
 1.0
 ```
 ## Step 2: Define the Game Rules
-In this step, we will define the basic rules of the game, such as how to judge whether the game is over, how to update the game state when perform a move on the robot, etc.
+In this step, we will define the basic rules of the game, such as how to judge whether the game is over, how to update the game state, when to perform a move on the robot, etc. You will be updating the following functions:
 
 ```python	
-def successors(self, D2):
+def perform_move(self, current_state, move_state):
 	pass
 
-def perform_move(self, current_state, move_state):
+def successors(self, D2):
 	pass
 
 def copy(self):
@@ -78,7 +79,7 @@ def copy(self):
 def game_over(self):
 	pass
 ```
-```perform_move(self, current_state, move_state)``` excute the movement of the robot and update the game object accordingly. This function should also return the direction of the movement (north, south, west, east).
+```perform_move(self, current_state, move_state)``` execute the movement of the robot and update the game object accordingly. This function should also return the direction of the movement (north, south, west, east).
 
 ```python
 >>> graph.printmap()
@@ -101,7 +102,7 @@ x x x o
 {(0, 0): 'x', (0, 1): 'D2_1', (0, 2): 'x', (0, 3): 'x', (1, 0): 'D2_2', (1, 1): 'x', (1, 2): 'x', (1, 3): 'x', (2, 0): 'x', (2, 1): 'x', (2, 2): 'x', (2, 3): 'Q5_1', (3, 0): 'x', (3, 1): 'x', (3, 2): 'x', (3, 3): 'Q5_2'}
 ```
 
-```successors(self, D2)``` generate the successors of a game state, and D2 decides whether it is D2's turn. In each turn of a team, the robot 1 will move first and then the robot 2. This function will yield the movements of the two robots (a dictionary with keys of the robots and their next positions).
+```successors(self, D2)``` generate the successors of a game state. The paramater D2 indicates whether it is the D2 team's turn. In each turn of a team, the robot 1 will move first and then the robot 2, meaning that if the first robot leaves a position, that position is open for the robot's teammate on its move. This function should yield a tuple where the first element is the movements of the two robots (a dictionary with keys of the robots and their next positions), as well as a copy of the new game map after these moves are performed.
 
 ```python
 >>> for move, game in graph.successors(D2 = True):
@@ -150,7 +151,7 @@ x x x x
 x x o x 
 x x o x
 ``` 
-```copy(self)```function just return a new game object by deep copy of current game.
+```copy(self)``` Return a new game object that is identical to the current, making a deep copy of the current state.
 
 ```python
 >>> new_graph = graph.copy()
@@ -179,7 +180,7 @@ True
 ```
 
 ## Step 3: Define the A* algorithm and the evaluate function
-Implement the A star to calculate the shortest path between two vertics. This step is almost the same as the solution of excercise 2, but it should be noticed that, in the cases of the opponents occupy the flag, the path cannot lead to the goal(robots will be considered as obstacles), thus the total length of the path should be modified.
+Implement the A star to calculate the shortest path between two vertics. This step is almost the same as the solution of excercise 2, but it should be noticed that, in the cases of the opponents occupy the flag, the path cannot lead to the goal(robots will be considered as obstacles). In this case, when the robot ends up next to the flag, return the current path as well as the path length plus one.
 
 ```python
 def Astar(self, start, goal):
@@ -189,14 +190,14 @@ def Astar(self, start, goal):
 	'''
 	pass
 ```
-Using the same parameters of graph as above, you could expect the following outputs：
+Using the same parameters of graph as above, you could expect the following outputs (any path that is the shortest is alright)：
 
 ```python
 >>> graph.Astar((0, 0), (2, 2))
 ([(0, 0), (0, 1), (0, 2), (1, 2), (2, 2)], 5)
 ```
 
-The ```evaluate(self, D2)``` estimate the utilities (scores) of current state which reflect the chance of wining the game. There are various methods to evaluate the utilities in this game, and different approaches will have influence on the performance of the robot and game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of seach team as the utility.
+The ```evaluate(self, D2)``` estimates the utilities (scores) of current state which reflect the chance of winning the game. There are various methods to evaluate the utilities in this game, and different approaches will have different influences on the performance of the robots and the game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of each team as the utility. D2 is a boolean representing whether the utility is for the D2 team or not. If the D2 team is "winning", their utility should be higher.
 
 ```python
 def evaluate(self, D2):
