@@ -114,7 +114,7 @@ def game_over(self):
 	pass
 ```
 
-1. **[8 points]** Implement the function: ```perform_move(self, current_state, move_state)``` to execute the movement of the robot and update the game accordingly. Make sure to update the map, state, and robot_pos parameters. This function should also return the direction of the movement ("north", "south", "west", "east"). The first input corresponds to the position of a robot, and the second corresponds to the position the robot should move to. You can assume that all inputs to this function will follow correct logic.
+1. **[8 points]** Implement the function: ```perform_move(self, current_state, move_state)``` to execute the movement of the robot and update the game accordingly. Make sure to update the map, state, and robot_pos parameters. This function should also return the direction of the movement ("north", "south", "west", "east"). The first input corresponds to the position of a robot, and the second corresponds to the position the robot should move to. You can assume that all inputs to this function will follow correct logic (i.e. only being able to move one step, can't move off the board, etc.).
 
 ```python
 >>> graph.printmap()
