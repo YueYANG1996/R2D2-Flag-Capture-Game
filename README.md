@@ -7,7 +7,7 @@ In this game, there will be two teams of two robots each. One team will consist 
 
 ## Step 1. Create the Game Board [15 points]
 
-1. **[8 points]** Similar to the A* game in the last extra credit excercise, the game board in this assignment also takes in the vertices and edges to define a graph. Along with these two parameters, we also need to define the position of the robots and the flags. These four vertices will be passed to the constructor for our FlagCaptureGraph game.
+1. **[8 points]** Similar to the A* game in the last extra credit exerecise, the game board in this assignment also takes in the vertices and edges to define a graph. Along with these two parameters, we also need to define the position of the robots and the flags. These location vertices will be passed to the constructor for our FlagCaptureGraph game.
 
 ```python
 def __init__(self, V, E, game_map, flag):
@@ -47,7 +47,7 @@ x x x o
 {'D2_1': (0, 0), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)}
 ```
 
-2. **[5 points]** Implement the neighbors function to return the non-occupied neighbors of a vertex. The return value should be a list containing all non-occupied vertices adjacent to the input vertex (if the input vertex is on a corner/edge, adjust accordingly).
+2. **[5 points]** Implement the neighbors function to return neighbors of a vertex that are not currently occupied by a robot. The return value should be a list containing all non-occupied vertices adjacent to the input vertex (if the input vertex is on a corner/edge, adjust accordingly).
 
 ```python	
 def neighbors(self, u):
@@ -84,11 +84,10 @@ def dist_between(self, u, v):
 In this step, we will define the basic rules of the game, such as how to update the game state, what the successors of a state are, how to judge whether the game is over, etc. You will be updating the following functions:
 
 ```python	
-def perform_move(self, current_state, move_state):
+def perform_move(self, robot, direction):
 	'''
 		Execute the movement of the robot and update the game accordingly, updating the state,
-		map, and robot_pos parameters. This function should also return the direction of the 
-		movement ("north", "south", "west", "east")
+		map, and robot_pos parameters. This function should throw an exception if the move is not leagl.
 	'''
 	pass
 	
@@ -114,7 +113,7 @@ def game_over(self):
 	pass
 ```
 
-1. **[8 points]** Implement the function: ```perform_move(self, current_state, move_state)``` to execute the movement of the robot and update the game accordingly. Make sure to update the map, state, and robot_pos parameters. This function should also return the direction of the movement ("north", "south", "west", "east"). The first input corresponds to the position of a robot, and the second corresponds to the position the robot should move to. You can assume that all inputs to this function will follow correct logic (i.e. only being able to move one step, can't move off the board, etc.).
+1. **[8 points]** Implement the function: ```perform_move(self, robot, direction)``` to execute the movement of the robot and update the game accordingly. Make sure to update the map, state, and robot_pos parameters.  The first input corresponds to the the robot, and the second corresponds to the direction that the robot should move. You should thown an exception if this function tries to do something illegal (e.g. moves into an occupied space, or moves off the board, etc.).
 
 ```python
 >>> graph.printmap()
@@ -317,7 +316,7 @@ o x x x
 Q5 WIN
 ```
 
-## Step 5: Let your Robots rolling in a real game [0 points]
+## Step 5: Set up your Robots to play a real game [0 points]
 You will apply your algorithm in the real robots to visulize your program. The ```record_game``` store the movement of each robot and the data looks like:
 
 ```python
@@ -325,7 +324,7 @@ You will apply your algorithm in the real robots to visulize your program. The `
 [('D2_1', 'east'), ('D2_2', 'south'), ('Q5_1', 'north'), ('Q5_2', 'west'), ('D2_1', 'east'), ('D2_2', 'south'), ('Q5_1', 'west'), ('Q5_2', 'west'), ('D2_1', 'east'), ('D2_2', 'north'), ('Q5_1', 'north'), ('Q5_2', 'west'), ('D2_1', 'south'), ('D2_2', 'east'), ('Q5_1', 'west')]
 ```
 
-You could implement a API to send commands to the robots to perform the movements. First, you need to connect to all of your robots using the following code.
+You could implement an API to send commands to the robots to perform the movements. First, you need to connect to all of your robots using the following code.  
 
 ```python
 >>> from client import DroidClient
