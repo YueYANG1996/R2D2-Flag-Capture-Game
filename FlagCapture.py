@@ -74,15 +74,20 @@ class FlagCaptureGraph:
             return False
 
     def printmap(self):
-        for row in self.map:
+        for i in range(len(self.map)):
             row_str = ''
-            for grid in row:
+            for j in range(len(self.map[0])):
+                grid = self.map[i][j]
                 if grid == 'D2_1' or grid == 'D2_2':
-                    add = '* '
+                    add = '○ '
                 elif grid == 'Q5_1' or grid == 'Q5_2':
-                    add = 'o '
+                    add = '• '
+                elif self.flag['flag_D2'] == (i, j):
+                    add = '◘ '
+                elif self.flag['flag_Q5'] == (i, j):
+                    add = '◙ '
                 else:
-                    add = 'x '
+                    add = '☐ '
                 row_str += add
             print(row_str)
 
