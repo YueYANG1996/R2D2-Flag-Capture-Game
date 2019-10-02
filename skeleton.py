@@ -45,7 +45,7 @@ class FlagCaptureGraph:
 
     def copy(self):
 	'''
-		Return a new FlagCaptureGraph object that is identical to the current
+		Return a deep copy of the current FlagCaptureGraph object
 	'''
         pass
     

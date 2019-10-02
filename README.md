@@ -209,7 +209,7 @@ x x o x
 >>> flag = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
 >>> graph = FlagCaptureGraph(V, E, state, flag)
 
->>> graph.gameover()
+>>> graph.game_over()
 False
 
 >>> state = [['D2_1', 'x', 'x', 'x'], ['x', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'D2_2', 'Q5_2']]
