@@ -35,10 +35,10 @@ Given the inputs as shown, you should match the following outputs (the printmap 
 [['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
 
 >>> graph.printmap()
-* x x x 
-* x x x 
-x x x o 
-x x x o 
+○ ◙ ☐ ☐
+○ ☐ ☐ ☐
+☐ ☐ ☐ •
+☐ ☐ ◘ •
 
 >>> graph.state
 {(0, 0): 'D2_1', (0, 1): 'x', (0, 2): 'x', (0, 3): 'x', (1, 0): 'D2_2', (1, 1): 'x', (1, 2): 'x', (1, 3): 'x', (2, 0): 'x', (2, 1): 'x', (2, 2): 'x', (2, 3): 'Q5_1', (3, 0): 'x', (3, 1): 'x', (3, 2): 'x', (3, 3): 'Q5_2'}
@@ -117,19 +117,19 @@ def game_over(self):
 
 ```python
 >>> graph.printmap()
-* x x x 
-* x x x 
-x x x o 
-x x x o 
+○ ◙ ☐ ☐
+○ ☐ ☐ ☐
+☐ ☐ ☐ •
+☐ ☐ ◘ •
 
 >>> graph.perform_move((0, 0), (0, 1))
 'east'
 
 >>> graph.printmap()
-x * x x 
-* x x x 
-x x x o 
-x x x o
+☐ ○ ☐ ☐
+○ ☐ ☐ ☐
+☐ ☐ ☐ •
+☐ ☐ ◘ •
 >>> graph.map
 [['x', 'D2_1', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
 >>> graph.state
@@ -158,20 +158,20 @@ False
 ...     game.printmap()
 ... 
 {'D2_1': (0, 1), 'D2_2': (0, 0)}
-* * x x 
-x x x x 
-x x x o 
-x x x o 
+○ ○ ☐ ☐
+☐ ☐ ☐ ☐
+☐ ☐ ☐ •
+☐ ☐ ◘ •
 {'D2_1': (0, 1), 'D2_2': (1, 1)}
-x * x x 
-x * x x 
-x x x o 
-x x x o 
+☐ ○ ☐ ☐
+☐ ○ ☐ ☐
+☐ ☐ ☐ •
+☐ ☐ ◘ •
 {'D2_1': (0, 1), 'D2_2': (2, 0)}
-x * x x 
-x x x x 
-* x x o 
-x x x o 
+☐ ○ ☐ ☐
+☐ ☐ ☐ ☐
+○ ☐ ☐ •
+☐ ☐ ◘ •
 ``` 
 ```python
 >>> for move, game in graph.successors(D2 = False):
@@ -179,25 +179,25 @@ x x x o
 ...     game.printmap()
 ... 
 {'Q5_1': (1, 3), 'Q5_2': (2, 3)}
-* x x x 
-* x x o 
-x x x o 
-x x x x 
+○ ◙ ☐ ☐
+○ ☐ ☐ •
+☐ ☐ ☐ •
+☐ ☐ ◘ ☐
 {'Q5_1': (1, 3), 'Q5_2': (3, 2)}
-* x x x 
-* x x o 
-x x x x 
-x x o x 
+○ ◙ ☐ ☐
+○ ☐ ☐ •
+☐ ☐ ☐ ☐
+☐ ☐ • ☐
 {'Q5_1': (2, 2), 'Q5_2': (2, 3)}
-* x x x 
-* x x x 
-x x o o 
-x x x x 
+○ ◙ ☐ ☐
+○ ☐ ☐ ☐
+☐ ☐ • •
+☐ ☐ ◘ ☐
 {'Q5_1': (2, 2), 'Q5_2': (3, 2)}
-* x x x 
-* x x x 
-x x o x 
-x x o x
+○ ◙ ☐ ☐
+○ ☐ ☐ ☐
+☐ ☐ • ☐
+☐ ☐ • ☐
 ``` 
 
 4. **[10 points]** Implement ```game_over(self)``` to reflect whether a game is over or not. The criteria for a game being over is if a robot from a team is on its flag.
@@ -284,34 +284,34 @@ After you finished the minimax algorithm, you could now play the game in a virtu
 >>> record_game = simulate_game(graph, D2 = True, limit = 4)
 Round: 1
 D2 Turn
-x * x x 
-* x x x 
-x x x o 
-x x x o 
+☐ ○ ☐ ☐
+○ ☐ ☐ ☐
+☐ ☐ ☐ •
+☐ ☐ ◘ •
              
-x * x x 
-x x x x 
-* x x o 
-x x x o 
+☐ ○ ☐ ☐
+☐ ☐ ☐ ☐
+○ ☐ ☐ •
+☐ ☐ ◘ •
              
 Q5 Turn
-x * x x 
-x x x o 
-* x x x 
-x x x o 
+☐ ○ ☐ ☐
+☐ ☐ ☐ •
+○ ☐ ☐ ☐
+☐ ☐ ◘ •
              
-x * x x 
-x x x o 
-* x x x 
-x x o x 
+☐ ○ ☐ ☐
+☐ ☐ ☐ •
+○ ☐ ☐ ☐
+☐ ☐ • ☐
 
 ...
 
 Q5 Turn
-x o x x 
-x x x * 
-x * x x 
-o x x x 
+☐ • ☐ ☐
+☐ ☐ ☐ ○
+☐ ○ ☐ ☐
+• ☐ ◘ ☐
              
 Q5 WIN
 ```
