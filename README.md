@@ -10,15 +10,12 @@ In this game, there will be two teams of two robots each. One team will consist 
 1. **[8 points]** Similar to the A* game in the last extra credit exerecise, the game board in this assignment also takes in the vertices and edges to define a graph. Along with these two parameters, we also need to define the position of the robots and the flags. These location vertices will be passed to the constructor for our FlagCaptureGraph game.
 
 ```python
-def __init__(self, V, E, game_map, flag):
+def __init__(self, V, E, robots_pos, flags_pos):
 	'''
 		self.vertices --  store the vertices of the graph
 		self.edges   --  store the edges of the graph
-		self.map     --  store the map of the gameboard
-		self.flag    -- store the positions of the flags
-		
-		self.state   --  dictionary to represent the state of each grid, keys = vertices, value = vertex value in map
-		self.robot_pos -- store the positions of the robots in a dictionary, keys = robot name, value = vertex
+		self.robots_pos -- store the positions of the robots in a dictionary, keys = robot name, value = vertex
+		self.flags_pos    -- store the positions of the flags
 	'''
 	pass
 ```
@@ -27,24 +24,14 @@ Given the inputs as shown, you should match the following outputs (the printmap 
 ```python
 >>> V = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
 >>> E = [((0, 0), (0, 1)), ((0, 0), (1, 0)), ((0, 1), (0, 2)), ((0, 1), (1, 1)), ((0, 1), (0, 0)), ((0, 2), (0, 3)), ((0, 2), (1, 2)), ((0, 2), (0, 1)), ((0, 3), (1, 3)), ((0, 3), (0, 2)), ((1, 0), (0, 0)), ((1, 0), (1, 1)), ((1, 0), (2, 0)), ((1, 1), (0, 1)), ((1, 1), (1, 2)), ((1, 1), (2, 1)), ((1, 1), (1, 0)), ((1, 2), (0, 2)), ((1, 2), (1, 3)), ((1, 2), (2, 2)), ((1, 2), (1, 1)), ((1, 3), (0, 3)), ((1, 3), (2, 3)), ((1, 3), (1, 2)), ((2, 0), (1, 0)), ((2, 0), (2, 1)), ((2, 0), (3, 0)), ((2, 1), (1, 1)), ((2, 1), (2, 2)), ((2, 1), (3, 1)), ((2, 1), (2, 0)), ((2, 2), (1, 2)), ((2, 2), (2, 3)), ((2, 2), (3, 2)), ((2, 2), (2, 1)), ((2, 3), (1, 3)), ((2, 3), (3, 3)), ((2, 3), (2, 2)), ((3, 0), (2, 0)), ((3, 0), (3, 1)), ((3, 1), (2, 1)), ((3, 1), (3, 2)), ((3, 1), (3, 0)), ((3, 2), (2, 2)), ((3, 2), (3, 3)), ((3, 2), (3, 1)), ((3, 3), (2, 3)), ((3, 3), (3, 2))]
->>> game_map = [['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
->>> flag = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
->>> graph = FlagCaptureGraph(V, E, game_map, flag)
-
->>> graph.map
-[['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
-
+>>> robots_pos = {'D2_1': (0, 0), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)}
+>>> flags_pos = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
+>>> graph = FlagCaptureGraph(V, E, robots_pos, flags_pos)
 >>> graph.printmap()
 ○ ◙ ☐ ☐
 ○ ☐ ☐ ☐
 ☐ ☐ ☐ •
 ☐ ☐ ◘ •
-
->>> graph.state
-{(0, 0): 'D2_1', (0, 1): 'x', (0, 2): 'x', (0, 3): 'x', (1, 0): 'D2_2', (1, 1): 'x', (1, 2): 'x', (1, 3): 'x', (2, 0): 'x', (2, 1): 'x', (2, 2): 'x', (2, 3): 'Q5_1', (3, 0): 'x', (3, 1): 'x', (3, 2): 'x', (3, 3): 'Q5_2'}
-
->>> graph.robot_pos
-{'D2_1': (0, 0), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)}
 ```
 
 2. **[5 points]** Implement the neighbors function to return neighbors of a vertex that are not currently occupied by a robot. The return value should be a list containing all non-occupied vertices adjacent to the input vertex (if the input vertex is on a corner/edge, adjust accordingly).
