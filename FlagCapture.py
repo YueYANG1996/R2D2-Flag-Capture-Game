@@ -174,16 +174,22 @@ def printmap(G):
                 current_node = (int(i / 2), j)
                 right_node = (int(i / 2), j + 1)
                 pattern = '☐'
-                if current_node in G.robots_pos.values():
-                    if inv_robots_pos[current_node] == 'D2_1' or inv_robots_pos[current_node] == 'D2_2':
-                        pattern = '○'
-                    elif inv_robots_pos[current_node] == 'Q5_1' or inv_robots_pos[current_node] == 'Q5_2':
-                        pattern = '●'
                 if current_node in G.flags_pos.values():
                     if inv_flags_pos[current_node] == 'flag_D2':
                         pattern = '⚐'
                     elif inv_flags_pos[current_node] == 'flag_Q5':
                         pattern = '⚑'
+
+                if current_node in G.robots_pos.values():
+                    if inv_robots_pos[current_node] == 'D2_1':
+                        pattern = '➀'
+                    elif inv_robots_pos[current_node] == 'D2_2':
+                        pattern = '➁'
+                    elif inv_robots_pos[current_node] == 'Q5_1':
+                        pattern = '❶'
+                    elif inv_robots_pos[current_node] == 'Q5_2':
+                        pattern = '❷'
+
 
                 if (current_node, right_node) in G.edges and (right_node, current_node) in G.edges:
                     print_row += pattern + ' ' + '  '

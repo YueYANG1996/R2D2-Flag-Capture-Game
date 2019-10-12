@@ -27,13 +27,13 @@ Given the inputs as shown, you should match the following outputs (the printmap 
 >>> flags_pos = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
 >>> graph = FlagCaptureGraph(V, E, robots_pos, flags_pos)
 >>> printmap(graph)
-○   ⚑   ☐   ☐   
+➀   ⚑   ☐   ☐   
                
-○   ☐   ☐   ☐   
+➁   ☐   ☐   ☐   
                
-☐   ☐   ☐   ●   
+☐   ☐   ☐   ❶   
                
-☐   ☐   ⚐   ● 
+☐   ☐   ⚐   ❷   
 ```
 
 2. **[5 points]** Implement the neighbors function to return neighbors of a vertex that are not currently occupied by a robot. The return value should be a list containing all non-occupied vertices adjacent to the input vertex (if the input vertex is on a corner/edge, adjust accordingly).
@@ -105,25 +105,25 @@ def game_over(self):
 1. **[8 points]** Implement the function: ```perform_move(self, robot, direction)``` to execute the movement of the robot and update the game accordingly. Make sure to update the map, state, and robot_pos parameters.  The first input corresponds to the the robot, and the second corresponds to the direction that the robot should move. You should thown an exception if this function tries to do something illegal (e.g. moves into an occupied space, or moves off the board, etc.).
 
 ```python
->>> graph.printmap()
-○ ◙ ☐ ☐
-○ ☐ ☐ ☐
-☐ ☐ ☐ •
-☐ ☐ ◘ •
+>>> printmap(graph)
+➀   ⚑   ☐   ☐   
+               
+➁   ☐   ☐   ☐   
+               
+☐   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷     
 
->>> graph.perform_move((0, 0), (0, 1))
-'east'
-
+>>> graph.perform_move('D2_1', 'east')
 >>> graph.printmap()
-☐ ○ ☐ ☐
-○ ☐ ☐ ☐
-☐ ☐ ☐ •
-☐ ☐ ◘ •
->>> graph.map
-[['x', 'D2_1', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
->>> graph.state
-{(0, 0): 'x', (0, 1): 'D2_1', (0, 2): 'x', (0, 3): 'x', (1, 0): 'D2_2', (1, 1): 'x', (1, 2): 'x', (1, 3): 'x', (2, 0): 'x', (2, 1): 'x', (2, 2): 'x', (2, 3): 'Q5_1', (3, 0): 'x', (3, 1): 'x', (3, 2): 'x', (3, 3): 'Q5_2'}
->>> graph.robot_pos
+☐   ➀   ☐   ☐   
+               
+➁   ☐   ☐   ☐   
+               
+☐   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷ 
+>>> graph.robots_pos
 {'D2_1': (0, 1), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)} 
 ```
 
@@ -131,11 +131,10 @@ def game_over(self):
 
 ```python
 >>> new_graph = graph.copy()
->>> print(new_graph.state == graph.state)
+>>> print(new_graph.robots_pos == graph.robots_pos)
 True
->>> new_graph.perform_move((0, 0), (0, 1))
-'east'
->>> print(new_graph.state == graph.state)
+>>> new_graph.perform_move('D2_1', 'east')
+>>> print(new_graph.robots_pos == graph.robots_pos)
 False
 ```
 
@@ -144,99 +143,94 @@ False
 ```python
 >>> for move, game in graph.successors(D2 = True):
 ...     print(move)
-...     game.printmap()
+...     printmap(game)
 ... 
-{'D2_1': (0, 1), 'D2_2': (0, 0)}
-○ ○ ☐ ☐
-☐ ☐ ☐ ☐
-☐ ☐ ☐ •
-☐ ☐ ◘ •
-{'D2_1': (0, 1), 'D2_2': (1, 1)}
-☐ ○ ☐ ☐
-☐ ○ ☐ ☐
-☐ ☐ ☐ •
-☐ ☐ ◘ •
-{'D2_1': (0, 1), 'D2_2': (2, 0)}
-☐ ○ ☐ ☐
-☐ ☐ ☐ ☐
-○ ☐ ☐ •
-☐ ☐ ◘ •
+{'D2_1': 'east', 'D2_2': 'south'}
+☐   ➀   ☐   ☐   
+               
+☐   ☐   ☐   ☐   
+               
+➁   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷  
+{'D2_1': 'east', 'D2_2': 'north'}
+➁   ➀   ☐   ☐   
+               
+☐   ☐   ☐   ☐   
+               
+☐   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷  
+{'D2_1': 'east', 'D2_2': 'east'}
+☐   ➀   ☐   ☐   
+               
+☐   ➁   ☐   ☐   
+               
+☐   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷  
 ``` 
 ```python
 >>> for move, game in graph.successors(D2 = False):
 ...     print(move)
-...     game.printmap()
+...     printmap(game)
 ... 
-{'Q5_1': (1, 3), 'Q5_2': (2, 3)}
-○ ◙ ☐ ☐
-○ ☐ ☐ •
-☐ ☐ ☐ •
-☐ ☐ ◘ ☐
-{'Q5_1': (1, 3), 'Q5_2': (3, 2)}
-○ ◙ ☐ ☐
-○ ☐ ☐ •
-☐ ☐ ☐ ☐
-☐ ☐ • ☐
-{'Q5_1': (2, 2), 'Q5_2': (2, 3)}
-○ ◙ ☐ ☐
-○ ☐ ☐ ☐
-☐ ☐ • •
-☐ ☐ ◘ ☐
-{'Q5_1': (2, 2), 'Q5_2': (3, 2)}
-○ ◙ ☐ ☐
-○ ☐ ☐ ☐
-☐ ☐ • ☐
-☐ ☐ • ☐
+{'Q5_1': 'north', 'Q5_2': 'north'}
+➀   ⚑   ☐   ☐   
+               
+➁   ☐   ☐   ❶   
+               
+☐   ☐   ☐   ❷   
+               
+☐   ☐   ⚐   ☐   
+{'Q5_1': 'north', 'Q5_2': 'west'}
+➀   ⚑   ☐   ☐   
+               
+➁   ☐   ☐   ❶   
+               
+☐   ☐   ☐   ☐   
+               
+☐   ☐   ❷   ☐  
+{'Q5_1': 'west', 'Q5_2': 'north'}
+➀   ⚑   ☐   ☐   
+               
+➁   ☐   ☐   ☐   
+               
+☐   ☐   ❶   ❷   
+               
+☐   ☐   ⚐   ☐  
+{'Q5_1': 'west', 'Q5_2': 'west'}
+➀   ⚑   ☐   ☐   
+               
+➁   ☐   ☐   ☐   
+               
+☐   ☐   ❶   ☐   
+               
+☐   ☐   ❷   ☐ 
 ``` 
 
 4. **[10 points]** Implement ```game_over(self)``` to reflect whether a game is over or not. The criteria for a game being over is if a robot from a team is on its flag.
 
 ```python
->>> V = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
->>> E = [((0, 0), (0, 1)), ((0, 0), (1, 0)), ((0, 1), (0, 2)), ((0, 1), (1, 1)), ((0, 1), (0, 0)), ((0, 2), (0, 3)), ((0, 2), (1, 2)), ((0, 2), (0, 1)), ((0, 3), (1, 3)), ((0, 3), (0, 2)), ((1, 0), (0, 0)), ((1, 0), (1, 1)), ((1, 0), (2, 0)), ((1, 1), (0, 1)), ((1, 1), (1, 2)), ((1, 1), (2, 1)), ((1, 1), (1, 0)), ((1, 2), (0, 2)), ((1, 2), (1, 3)), ((1, 2), (2, 2)), ((1, 2), (1, 1)), ((1, 3), (0, 3)), ((1, 3), (2, 3)), ((1, 3), (1, 2)), ((2, 0), (1, 0)), ((2, 0), (2, 1)), ((2, 0), (3, 0)), ((2, 1), (1, 1)), ((2, 1), (2, 2)), ((2, 1), (3, 1)), ((2, 1), (2, 0)), ((2, 2), (1, 2)), ((2, 2), (2, 3)), ((2, 2), (3, 2)), ((2, 2), (2, 1)), ((2, 3), (1, 3)), ((2, 3), (3, 3)), ((2, 3), (2, 2)), ((3, 0), (2, 0)), ((3, 0), (3, 1)), ((3, 1), (2, 1)), ((3, 1), (3, 2)), ((3, 1), (3, 0)), ((3, 2), (2, 2)), ((3, 2), (3, 3)), ((3, 2), (3, 1)), ((3, 3), (2, 3)), ((3, 3), (3, 2))]
->>> state = [['D2_1', 'x', 'x', 'x'], ['D2_2', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'x', 'Q5_2']]
->>> flag = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
->>> graph = FlagCaptureGraph(V, E, state, flag)
+>>> V, E = generate_map(4, 4, [])
+>>> robots_pos = {'D2_1': (0, 0), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)}
+>>> flags_pos = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
+>>> graph = FlagCaptureGraph(V, E, robots_pos, flags_pos)
 
 >>> graph.game_over()
 False
 
->>> state = [['D2_1', 'x', 'x', 'x'], ['x', 'x', 'x', 'x'], ['x', 'x', 'x', 'Q5_1'], ['x', 'x', 'D2_2', 'Q5_2']]
+>>> robots_pos = {'D2_1': (3, 2), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)}
 >>> graph = FlagCaptureGraph(V, E, state, flag)
 
 >>> graph.game_over()
 True
 ```
 
-## Step 3: Define the A* algorithm and the evaluate function [32 points]
+## Step 3: Define your utility evaluate functin
 
-1. **[25 points]** Implement the A star algorithm to calculate the shortest path between two vertices. This function should return the path and length of the path in the form of (path, len(path)), here the path being a list of the vertices encountered along the path. In the case where a robot occupies the goal vertex, the path cannot lead to the goal (robots will be considered as obstacles). In this case, when the robot ends up next to the goal vertex, return the current path as well as the path length plus one.
+1. **[25 points]** This part is open-ended, you should come up with a method to evaluate the utilities of the game. The evaluate function will have impact on the performance of your robot and we will use the official method to play a game with your algorithm as the autograder. We will give your robots some advantages of the test cases and if your algorithm could beat us in 20 rounds, you could get the points.
 
-```python
-def Astar(self, start, goal):
-	'''
-		return an optimal path and length of the path
-		in the form of (path, len(path))
-	'''
-	pass
-```
-Using the same parameters of the graph as above, you should expect the following outputs (any path that is the shortest is alright)：
-
-```python
->>> graph.Astar((0, 0), (2, 2))
-([(0, 0), (0, 1), (0, 2), (1, 2), (2, 2)], 5)
-```
-
-2. **[7 points]** The ```evaluate(self, D2)``` function estimates the utilities (scores) of the current state which reflects the chance of winning the game. There are various methods to evaluate the utilities in this game, and different approaches will have different influences on the performance of the robots and the game results. Here is a recommended solution: using the difference of the minimum cost to reach the flag of each team as the utility. D2 is a boolean representing whether the utility is for the D2 team or not. If the D2 team is "winning", their utility should be higher.
-
-```python
-def evaluate(self, D2):
-	'''
-		Return a numeric value (float/int) representing the utility for the D2 or Q5 team.
-		If the team is "winning" their utility should be higher.
-	'''
-	pass
-```
 
 ## Step 4: Implement Minimax algorithm with alpha-beta pruning [30 points]
 
@@ -273,35 +267,51 @@ After you finished the minimax algorithm, you could now play the game in a virtu
 >>> record_game = simulate_game(graph, D2 = True, limit = 4)
 Round: 1
 D2 Turn
-☐ ○ ☐ ☐
-○ ☐ ☐ ☐
-☐ ☐ ☐ •
-☐ ☐ ◘ •
-             
-☐ ○ ☐ ☐
-☐ ☐ ☐ ☐
-○ ☐ ☐ •
-☐ ☐ ◘ •
-             
+☐   ➀   ☐   ☐   
+               
+➁   ☐   ☐   ☐   
+               
+☐   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷   
+--------------
+☐   ➀   ☐   ☐   
+               
+☐   ➁   ☐   ☐   
+               
+☐   ☐   ☐   ❶   
+               
+☐   ☐   ⚐   ❷   
+--------------
 Q5 Turn
-☐ ○ ☐ ☐
-☐ ☐ ☐ •
-○ ☐ ☐ ☐
-☐ ☐ ◘ •
-             
-☐ ○ ☐ ☐
-☐ ☐ ☐ •
-○ ☐ ☐ ☐
-☐ ☐ • ☐
+☐   ➀   ☐   ☐   
+               
+☐   ➁   ☐   ❶   
+               
+☐   ☐   ☐   ☐   
+               
+☐   ☐   ⚐   ❷   
+--------------
+☐   ➀   ☐   ☐   
+               
+☐   ➁   ☐   ❶   
+               
+☐   ☐   ☐   ☐   
+               
+☐   ☐   ❷   ☐   
+--------------
 
 ...
 
 Q5 Turn
-☐ • ☐ ☐
-☐ ☐ ☐ ○
-☐ ○ ☐ ☐
-• ☐ ◘ ☐
-             
+☐   ❶   ☐   ☐   
+               
+➁   ☐   ☐   ➀   
+               
+☐   ☐   ☐   ☐   
+               
+❷   ☐   ⚐   ☐   
+--------------
 Q5 WIN
 ```
 
