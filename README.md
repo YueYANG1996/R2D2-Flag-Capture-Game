@@ -22,16 +22,18 @@ def __init__(self, V, E, robots_pos, flags_pos):
 Given the inputs as shown, you should match the following outputs (the printmap function is already defined in our skeleton file):
 
 ```python
->>> V = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3), (3, 0), (3, 1), (3, 2), (3, 3)]
->>> E = [((0, 0), (0, 1)), ((0, 0), (1, 0)), ((0, 1), (0, 2)), ((0, 1), (1, 1)), ((0, 1), (0, 0)), ((0, 2), (0, 3)), ((0, 2), (1, 2)), ((0, 2), (0, 1)), ((0, 3), (1, 3)), ((0, 3), (0, 2)), ((1, 0), (0, 0)), ((1, 0), (1, 1)), ((1, 0), (2, 0)), ((1, 1), (0, 1)), ((1, 1), (1, 2)), ((1, 1), (2, 1)), ((1, 1), (1, 0)), ((1, 2), (0, 2)), ((1, 2), (1, 3)), ((1, 2), (2, 2)), ((1, 2), (1, 1)), ((1, 3), (0, 3)), ((1, 3), (2, 3)), ((1, 3), (1, 2)), ((2, 0), (1, 0)), ((2, 0), (2, 1)), ((2, 0), (3, 0)), ((2, 1), (1, 1)), ((2, 1), (2, 2)), ((2, 1), (3, 1)), ((2, 1), (2, 0)), ((2, 2), (1, 2)), ((2, 2), (2, 3)), ((2, 2), (3, 2)), ((2, 2), (2, 1)), ((2, 3), (1, 3)), ((2, 3), (3, 3)), ((2, 3), (2, 2)), ((3, 0), (2, 0)), ((3, 0), (3, 1)), ((3, 1), (2, 1)), ((3, 1), (3, 2)), ((3, 1), (3, 0)), ((3, 2), (2, 2)), ((3, 2), (3, 3)), ((3, 2), (3, 1)), ((3, 3), (2, 3)), ((3, 3), (3, 2))]
+>>> V, E = generate_map(4, 4, [])
 >>> robots_pos = {'D2_1': (0, 0), 'D2_2': (1, 0), 'Q5_1': (2, 3), 'Q5_2': (3, 3)}
 >>> flags_pos = {'flag_D2': (3, 2), 'flag_Q5': (0, 1)}
 >>> graph = FlagCaptureGraph(V, E, robots_pos, flags_pos)
->>> graph.printmap()
-○ ◙ ☐ ☐
-○ ☐ ☐ ☐
-☐ ☐ ☐ •
-☐ ☐ ◘ •
+>>> printmap(graph)
+○   ⚑   ☐   ☐   
+               
+○   ☐   ☐   ☐   
+               
+☐   ☐   ☐   ●   
+               
+☐   ☐   ⚐   ● 
 ```
 
 2. **[5 points]** Implement the neighbors function to return neighbors of a vertex that are not currently occupied by a robot. The return value should be a list containing all non-occupied vertices adjacent to the input vertex (if the input vertex is on a corner/edge, adjust accordingly).
