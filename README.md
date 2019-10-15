@@ -227,7 +227,7 @@ False
 True
 ```
 
-## Step 3: Define your utility evaluate functin
+## Step 3: Define your utility evaluate function
 
 1. **[25 points]** This part is open-ended, you should come up with a method to evaluate the utilities of the game. The evaluate function will have impact on the performance of your robot and we will use the official method to play a game with your algorithm as the autograder. We will give your robots some advantages in the test cases and if your algorithm could beat us in 20 rounds, you could get the points.
 
