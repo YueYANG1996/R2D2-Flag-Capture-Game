@@ -12,49 +12,21 @@ class FlagCaptureGraph:
         self.flags_pos = flags_pos
         self.robots_pos = robots_pos
         self.direct2vec = {'south': (1, 0), 'north': (-1, 0), 'east': (0, 1), 'west': (0, -1), 'stay': (0, 0)}
+        self.adjacent = {}
+        for node in self.vertics:
+            neighbors = []
+            for x, y in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                next_state = (node[0] + x, node[1] + y)
+                if (node, next_state) in self.edges:
+                    if next_state not in self.robots_pos.values():
+                        neighbors.append(next_state)
+            self.adjacent[node] = neighbors
         
     def neighbors(self, u):
-        neighbors_lst = []
-        for x, y in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-            next_state = (u[0] + x, u[1] + y)
-            if (u, next_state) in self.edges:
-                if next_state not in self.robots_pos.values():
-                    neighbors_lst.append(next_state)
-        return neighbors_lst
+        return self.adjacent[u]
 
     def dist_between(self, u, v):
         return math.sqrt(pow(u[0] - v[0], 2) + pow(u[1] - v[1], 2))
-
-    def Astar(self, start, goal):
-        rows = self.vertics[-1][0]
-        cols = self.vertics[-1][1]
-        node_visited = []
-        q = queue.PriorityQueue()
-        astar_cost_start = math.sqrt(pow(start[0] - goal[0],2) + pow(start[1] - goal[1],2))
-        cost_start = 0
-        path = [start]
-        q.put((astar_cost_start, cost_start, path, start))
-        
-        while q.empty() != True:
-            current_node = q.get()
-            astar_cost, current_cost, path, current_pos = current_node[0], current_node[1], current_node[2], current_node[3]
-            
-            if goal in self.robots_pos.values():
-                if self.dist_between(current_pos, goal) == 1:
-                    return (path, len(path) + 1)
-
-            if current_pos == goal:
-                return (path, len(path))
-
-            if current_pos not in node_visited:
-                node_visited.append(current_pos)
-                for node in self.neighbors(current_pos):
-                    expand_cost = current_cost + math.sqrt(pow(node[0] - current_pos[0],2) + pow(node[1] - current_pos[1],2))
-                    heuristic = math.sqrt(pow(node[0] - goal[0],2) + pow(node[1] - goal[1],2))
-                    expand_astar_cost = expand_cost + heuristic
-                    new_state = (expand_astar_cost, expand_cost, path + [node], node)
-                    q.put(new_state)
-        return (path, len(path))
 
     def copy(self):
         new_robots_pos = copy.deepcopy(self.robots_pos)
@@ -119,15 +91,49 @@ class FlagCaptureGraph:
                     new_game_2.perform_move('Q5_2', move_direction_2)
                     yield movement, new_game_2
 
+    def Astar(self, start, goal):
+        rows = self.vertics[-1][0]
+        cols = self.vertics[-1][1]
+        node_visited = []
+        q = queue.PriorityQueue()
+        astar_cost_start = math.sqrt(pow(start[0] - goal[0],2) + pow(start[1] - goal[1],2))
+        cost_start = 0
+        path = [start]
+        q.put((astar_cost_start, cost_start, path, start))
+        
+        while q.empty() != True:
+            current_node = q.get()
+            astar_cost, current_cost, path, current_pos = current_node[0], current_node[1], current_node[2], current_node[3]
+            
+            if goal in self.robots_pos.values():
+                if self.dist_between(current_pos, goal) == 1:
+                    return (path, len(path) + 1)
+
+            if current_pos == goal:
+                return (path, len(path))
+
+            if current_pos not in node_visited:
+                node_visited.append(current_pos)
+                for node in self.neighbors(current_pos):
+                    expand_cost = current_cost + math.sqrt(pow(node[0] - current_pos[0],2) + pow(node[1] - current_pos[1],2))
+                    heuristic = math.sqrt(pow(node[0] - goal[0],2) + pow(node[1] - goal[1],2))
+                    expand_astar_cost = expand_cost + heuristic
+                    new_state = (expand_astar_cost, expand_cost, path + [node], node)
+                    q.put(new_state)
+        return (path, len(path))
+
     def evaluate(self, D2):
         cost_D2_1 = self.Astar(self.robots_pos['D2_1'], self.flags_pos['flag_D2'])[1]
         cost_D2_2 = self.Astar(self.robots_pos['D2_2'], self.flags_pos['flag_D2'])[1]
         cost_Q5_1 = self.Astar(self.robots_pos['Q5_1'], self.flags_pos['flag_Q5'])[1]
         cost_Q5_2 = self.Astar(self.robots_pos['Q5_2'], self.flags_pos['flag_Q5'])[1]
-        # if D2 == True:
-        #     return min(cost_Q5_1, cost_Q5_2) - min(cost_D2_1, cost_D2_2)
-        # else:
-        #     return - min(cost_Q5_1, cost_Q5_2) + min(cost_D2_1, cost_D2_2)
+        
+        # freedom_D2_1 = len(self.legalmoves('D2_1'))
+        # freedom_D2_2 = len(self.legalmoves('D2_2'))
+        # freedom_Q5_1 = len(self.legalmoves('Q5_1'))
+        # freedom_Q5_2 = len(self.legalmoves('Q5_2'))
+
+        utilities = 0
         if D2 == True:
             if min(cost_Q5_1, cost_Q5_2) <= 2:
                 return min(cost_Q5_1, cost_Q5_2)

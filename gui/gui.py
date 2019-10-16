@@ -65,7 +65,7 @@ class Board(tk.Canvas):
         self.q = q
         self.rows, self.cols = rows, cols
         self.square_half_size = int(
-            min(
+            max(
                 40,
                 int(500 / self.rows),
                 int(500 / self.cols)
