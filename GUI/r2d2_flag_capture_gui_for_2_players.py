@@ -8,8 +8,12 @@ import sys
 import os
 import random
 from PIL import Image, ImageTk
-from generate_map import generate_map, generate_random
-from FlagCapture import FlagCaptureGraph as Graph
+###assign one homework name as r2d2_hw3_1 and another as r2d2_hw3_2###
+##########r2d2_hw3_1 will be used for generate move for R2D2##########
+##########r2d2_hw3_2 will be used for generate move for R2Q5##########
+from r2d2_hw3_1 import generate_map, generate_random
+from r2d2_hw3_1 import FlagCaptureGraph as Graph
+from r2d2_hw3_2 import FlagCaptureGraph as Graph1
 import pickle
 import copy
 
@@ -80,8 +84,8 @@ class Board(tk.Canvas):
             background="white",
             *args, **kwargs)
 
-        if not isinstance(graph, Graph):
-            raise TypeError
+        # if not isinstance(graph, Graph) and not isinstance(graph, Graph1):
+        #     raise TypeError
 
         self.can_edit = False
 
@@ -533,7 +537,7 @@ class PlayGround(tk.Frame):
         if not isinstance(first, str):
             raise TypeError
 
-        if not isinstance(graph, Graph):
+        if not isinstance(graph, Graph) and not not isinstance(graph, Graph1):
             raise TypeError
 
         self.root = root
@@ -676,8 +680,12 @@ class PlayGround(tk.Frame):
                     # if isinstance(p, int):
                         t = True if self.current_team == 'D2' else False
                         print(self.current_team, t)
+                        if t == True:
+                            moves = self.graph.get_best_move(D2=t, limit=p)
+                        else:
+                            new_graph = Graph1(self.graph.vertics, self.graph.edges, self.graph.robots_pos, self.graph.flags_pos)
+                            moves = new_graph.get_best_move(D2=t, limit=p)
                         moves = self.graph.get_best_move(D2=t, limit=p)
-                        print(type(moves))
                         print(moves)
                         moves = moves[0]
                         if not isinstance(moves, dict):
